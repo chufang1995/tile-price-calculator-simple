@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>更新后的合计总成本计算逻辑测试</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        accent: '#F59E0B',
+                        dark: '#1F2937',
+                        light: '#F3F4F6'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .bg-gradient-primary {
+                background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .transition-all-300 {
+                transition: all 0.3s ease;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">更新后的合计总成本计算逻辑测试</h1>
+            <p class="text-gray-600">验证新的计算逻辑：合计总成本 = 进货总成本 + 一口价运费（不含附加费）或（重量×运费单价/吨）</p>
+        </header>
+
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">更新说明</h2>
+            <div class="bg-blue-50 p-4 rounded-md border border-blue-200 mb-6">
+                <p class="text-blue-700"><strong>新的计算逻辑：</strong></p>
+                <ul class="list-disc pl-5 mt-2 space-y-1 text-blue-700">
+                    <li>合计总成本 = 进货总成本 + 一口价运费（不包含运费附加费）</li>
+                    <li>或者</li>
+                    <li>合计总成本 = 进货总成本 + （重量 × 运费单价/吨）</li>
+                </ul>
+            </div>
+            
+            <p class="mb-4">注意：运费附加费仍然会显示在运费总额中，但不会计入合计总成本。</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">测试场景 1: 使用一口价运费</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">瓷砖尺寸</label>
+                        <p>800mm × 800mm × 10mm</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">数量</label>
+                        <p>100片</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">进货价（按平方）</label>
+                        <p>100元/㎡</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">一口价运费</label>
+                        <p>500元</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">运费附加费</label>
+                        <p>100元</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">利润率</label>
+                        <p>20%</p>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">计算结果</label>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>总面积: 64㎡</li>
+                            <li>进货总成本: 6400元</li>
+                            <li>运费总额: 600元 (500 + 100)</li>
+                            <li class="text-green-600 font-medium">合计总成本: 6900元 (6400 + 500) <span class="text-sm font-normal">(不含附加费)</span></li>
+                            <li>利润: 1280元 (6400 × 20%)</li>
+                            <li>总价: 8180元</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">测试场景 2: 使用按重量运费</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">瓷砖尺寸</label>
+                        <p>800mm × 800mm × 10mm</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">数量</label>
+                        <p>100片</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">进货价（按平方）</label>
+                        <p>100元/㎡</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">单砖重量</label>
+                        <p>20kg</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">按重量运费</label>
+                        <p>100元/吨</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">利润率</label>
+                        <p>20%</p>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">计算结果</label>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>总面积: 64㎡</li>
+                            <li>进货总成本: 6400元</li>
+                            <li>总重量: 2吨 (100 × 20kg)</li>
+                            <li>运费总额: 200元 (2吨 × 100元/吨)</li>
+                            <li class="text-green-600 font-medium">合计总成本: 6600元 (6400 + 200)</li>
+                            <li>利润: 1280元 (6400 × 20%)</li>
+                            <li>总价: 7880元</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">交互式验证表单</h2>
+            <p class="mb-4">填写以下表单，验证更新后的合计总成本计算逻辑：</p>
+            
+            <form id="verify-form" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">瓷砖长度 (mm)</label>
+                        <input type="number" id="length" value="800" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">瓷砖宽度 (mm)</label>
+                        <input type="number" id="width" value="800" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">数量 (片)</label>
+                        <input type="number" id="quantity" value="100" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">进货价（按平方）(元/㎡)</label>
+                        <input type="number" id="cost-per-sqm" value="100" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">一口价运费 (元)</label>
+                        <input type="number" id="fixed-shipping" value="500" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">运费附加费 (元)</label>
+                        <input type="number" id="shipping-additional" value="100" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">利润率 (%)</label>
+                        <input type="number" id="profit-margin" value="20" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                </div>
+                
+                <button type="button" id="calculate-btn" class="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-all-300">
+                    计算验证
+                </button>
+            </form>
+            
+            <div id="result" class="mt-6 hidden">
+                <div class="bg-gray-50 p-4 rounded-md">
+                    <h3 class="font-medium text-gray-800 mb-2">计算结果</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-sm text-gray-600">进货总成本:</p>
+                            <p id="total-cost" class="font-medium text-gray-800"></p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">运费总额:</p>
+                            <p id="shipping-cost" class="font-medium text-gray-800"></p>
+                        </div>
+                        <div class="col-span-2">
+                            <p class="text-sm text-gray-600">合计总成本 (不含附加费):</p>
+                            <p id="total-cost-with-shipping" class="font-bold text-xl text-primary"></p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">利润:</p>
+                            <p id="profit" class="font-medium text-gray-800"></p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">总价:</p>
+                            <p id="total-price" class="font-medium text-gray-800"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-8">
+            <a href="index.html" class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-600 transition-all-300">
+                <i class="fa fa-arrow-left mr-2"></i> 返回主页面
+            </a>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>瓷砖价格计算工具 - 更新后的合计总成本计算逻辑测试</p>
+            <p class="text-gray-400 text-sm mt-2">© 2025 瓷砖价格计算工具. 保留所有权利.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('calculate-btn').addEventListener('click', function() {
+            const length = parseFloat(document.getElementById('length').value) || 0;
+            const width = parseFloat(document.getElementById('width').value) || 0;
+            const quantity = parseFloat(document.getElementById('quantity').value) || 0;
+            const costPerSqm = parseFloat(document.getElementById('cost-per-sqm').value) || 0;
+            const fixedShipping = parseFloat(document.getElementById('fixed-shipping').value) || 0;
+            const shippingAdditional = parseFloat(document.getElementById('shipping-additional').value) || 0;
+            const profitMargin = parseFloat(document.getElementById('profit-margin').value) || 0;
+            
+            // 计算面积
+            const lengthInM = length / 1000;
+            const widthInM = width / 1000;
+            const singleArea = lengthInM * widthInM;
+            const totalArea = singleArea * quantity;
+            
+            // 计算进货总成本
+            const totalCost = totalArea * costPerSqm;
+            
+            // 计算运费总额
+            let shippingCost = 0;
+            if (fixedShipping > 0) {
+                shippingCost = fixedShipping + shippingAdditional;
+            }
+            
+            // 计算合计总成本（不含附加费）
+            let totalCostWithShipping;
+            if (fixedShipping > 0) {
+                // 使用一口价运费（不包含附加费）
+                totalCostWithShipping = totalCost + fixedShipping;
+            } else {
+                // 使用按重量运费
+                totalCostWithShipping = totalCost + shippingCost;
+            }
+            
+            // 计算利润和总价
+            const profit = totalCost * (profitMargin / 100);
+            const totalPrice = totalCostWithShipping + profit;
+            
+            // 显示结果
+            document.getElementById('total-cost').textContent = `¥${totalCost.toFixed(2)}`;
+            document.getElementById('shipping-cost').textContent = `¥${shippingCost.toFixed(2)}`;
+            document.getElementById('total-cost-with-shipping').textContent = `¥${totalCostWithShipping.toFixed(2)}`;
+            document.getElementById('profit').textContent = `¥${profit.toFixed(2)}`;
+            document.getElementById('total-price').textContent = `¥${totalPrice.toFixed(2)}`;
+            
+            document.getElementById('result').classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
