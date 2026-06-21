@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>按平方卖价一口价功能测试</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        accent: '#F59E0B',
+                        dark: '#1F2937',
+                        light: '#F3F4F6'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .bg-gradient-primary {
+                background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .transition-all-300 {
+                transition: all 0.3s ease;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">按平方卖价一口价功能测试</h1>
+            <p class="text-gray-600">验证新增的按平方卖价一口价功能是否正常工作</p>
+        </header>
+
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">功能说明</h2>
+            <div class="bg-green-50 p-4 rounded-md border border-green-200 mb-6">
+                <p class="text-green-700 font-medium">现在瓷砖价格计算工具支持三种利润计算方式：</p>
+                <ol class="list-decimal pl-5 mt-2 space-y-1 text-green-700">
+                    <li><strong>按利润率计算</strong>：传统方式，根据进货总成本和利润率计算利润</li>
+                    <li><strong>按卖价一口价（片）计算</strong>：根据设定的每片卖价和总片数计算利润</li>
+                    <li><strong>按卖价一口价（平方）计算</strong>：新方式，根据设定的每平方卖价和总面积计算利润</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">计算逻辑</h2>
+            <div class="space-y-4">
+                <div class="bg-blue-50 p-4 rounded-md border border-blue-200">
+                    <h3 class="font-medium text-blue-800 mb-2">1. 按利润率计算（默认）</h3>
+                    <ul class="list-disc pl-5 space-y-1 text-blue-700">
+                        <li>利润 = 进货总成本 × 利润率 + 运费附加费</li>
+                        <li>总价（不含税运） = 进货总成本 × (1 + 利润率)</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-purple-50 p-4 rounded-md border border-purple-200">
+                    <h3 class="font-medium text-purple-800 mb-2">2. 按卖价一口价（片）计算</h3>
+                    <ul class="list-disc pl-5 space-y-1 text-purple-700">
+                        <li>总价（不含税运） = 卖价一口价（片） × 总片数</li>
+                        <li>利润 = 总价（不含税运） - 进货总成本 + 运费附加费</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-indigo-50 p-4 rounded-md border border-indigo-200">
+                    <h3 class="font-medium text-indigo-800 mb-2">3. 按卖价一口价（平方）计算</h3>
+                    <ul class="list-disc pl-5 space-y-1 text-indigo-700">
+                        <li>总价（不含税运） = 卖价一口价（平方） × 总面积</li>
+                        <li>利润 = 总价（不含税运） - 进货总成本 + 运费附加费</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">测试场景</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">基础信息</label>
+                        <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                            <li>瓷砖尺寸：800mm × 800mm × 10mm</li>
+                            <li>数量：100片</li>
+                            <li>总面积：64㎡</li>
+                            <li>进货价：100元/㎡</li>
+                            <li>运费：500元</li>
+                            <li>运费附加费：100元</li>
+                            <li>税点：13%</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">按利润率计算（30%）</label>
+                        <ul class="list-disc pl-5 space-y-1 text-blue-700">
+                            <li>进货总成本: 6400元</li>
+                            <li>利润: 6400 × 30% + 100 = 2020元</li>
+                            <li>总价（不含税运）: 6400 × 1.3 = 8320元</li>
+                            <li>总价: (8320 + 600) × 1.13 = 10301.60元</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">按卖价一口价（片）计算（100元/片）</label>
+                        <ul class="list-disc pl-5 space-y-1 text-purple-700">
+                            <li>进货总成本: 6400元</li>
+                            <li>总价（不含税运）: 100 × 100 = 10000元</li>
+                            <li>利润: 10000 - 6400 + 100 = 3700元</li>
+                            <li>总价: (10000 + 600) × 1.13 = 12078.00元</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">按卖价一口价（平方）计算（150元/㎡）</label>
+                        <ul class="list-disc pl-5 space-y-1 text-indigo-700">
+                            <li>进货总成本: 6400元</li>
+                            <li>总价（不含税运）: 150 × 64 = 9600元</li>
+                            <li>利润: 9600 - 6400 + 100 = 3300元</li>
+                            <li>总价: (9600 + 600) × 1.13 = 11978.00元</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">使用说明</h2>
+            <div class="space-y-4">
+                <p>在主页面中，您可以按照以下步骤使用按平方卖价一口价功能：</p>
+                
+                <div class="bg-gray-50 p-4 rounded-md">
+                    <ol class="list-decimal pl-5 space-y-2 text-gray-700">
+                        <li>在<strong>利润计算方式</strong>部分，选择<strong>按卖价一口价（平方）计算</strong></li>
+                        <li>在出现的输入框中，输入您想要的<strong>卖价一口价（元/㎡）</strong></li>
+                        <li>填写其他必要信息（如瓷砖尺寸、数量、进货价等）</li>
+                        <li>点击<strong>计算价格</strong>按钮</li>
+                        <li>系统将根据您设定的每平方卖价自动计算利润和最终价格</li>
+                    </ol>
+                </div>
+                
+                <div class="bg-yellow-50 p-4 rounded-md border border-yellow-200">
+                    <h3 class="font-medium text-yellow-800 mb-2">注意事项</h3>
+                    <ul class="list-disc pl-5 space-y-1 text-yellow-700">
+                        <li>您可以根据业务需求灵活选择三种利润计算方式</li>
+                        <li>如果选择按卖价计算，但未输入卖价，系统将自动切换回按利润率计算</li>
+                        <li>历史记录会保存您使用的利润计算方式和相关参数</li>
+                        <li>CSV导出功能会显示具体的利润计算方式</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-8">
+            <a href="index.html" class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-600 transition-all-300">
+                <i class="fa fa-arrow-left mr-2"></i> 返回主页面
+            </a>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>瓷砖价格计算工具 - 按平方卖价一口价功能测试</p>
+            <p class="text-gray-400 text-sm mt-2">© 2025 瓷砖价格计算工具. 保留所有权利.</p>
+        </div>
+    </footer>
+</body>
+</html>
