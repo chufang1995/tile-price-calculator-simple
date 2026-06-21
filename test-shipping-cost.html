@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>运费计算测试页面</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        accent: '#F59E0B',
+                        dark: '#1F2937',
+                        light: '#F3F4F6'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .bg-gradient-primary {
+                background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .transition-all-300 {
+                transition: all 0.3s ease;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">运费计算测试页面</h1>
+            <p class="text-gray-600">验证运费和合计总成本的计算逻辑</p>
+        </header>
+
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">测试场景 1: 仅设置一口价运费</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">瓷砖尺寸</label>
+                        <p>800mm × 800mm × 10mm</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">数量</label>
+                        <p>100片</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">进货价（按平方）</label>
+                        <p>100元/㎡</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">一口价运费</label>
+                        <p>500元</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">运费附加费</label>
+                        <p>100元</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">利润率</label>
+                        <p>20%</p>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">计算结果</label>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>总面积: 64㎡</li>
+                            <li>进货总成本: 6400元</li>
+                            <li>运费: 600元 (500 + 100)</li>
+                            <li>合计总成本: 7000元 (6400 + 600)</li>
+                            <li>利润: 1280元 (6400 × 20%)</li>
+                            <li>总价: 8280元</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">测试场景 2: 仅设置按重量运费</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">瓷砖尺寸</label>
+                        <p>800mm × 800mm × 10mm</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">数量</label>
+                        <p>100片</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">进货价（按平方）</label>
+                        <p>100元/㎡</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">单砖重量</label>
+                        <p>20kg</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">按重量运费</label>
+                        <p>100元/吨</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">利润率</label>
+                        <p>20%</p>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">计算结果</label>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>总面积: 64㎡</li>
+                            <li>进货总成本: 6400元</li>
+                            <li>总重量: 2吨 (100 × 20kg)</li>
+                            <li>运费: 200元 (2吨 × 100元/吨)</li>
+                            <li>合计总成本: 6600元 (6400 + 200)</li>
+                            <li>利润: 1280元 (6400 × 20%)</li>
+                            <li>总价: 7880元</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">测试场景 3: 同时设置一口价运费和按重量运费（优先使用一口价）</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">瓷砖尺寸</label>
+                        <p>800mm × 800mm × 10mm</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">数量</label>
+                        <p>100片</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">进货价（按平方）</label>
+                        <p>100元/㎡</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">一口价运费</label>
+                        <p>500元</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">运费附加费</label>
+                        <p>100元</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">单砖重量</label>
+                        <p>20kg</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">按重量运费</label>
+                        <p>100元/吨</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">利润率</label>
+                        <p>20%</p>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">计算结果</label>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>总面积: 64㎡</li>
+                            <li>进货总成本: 6400元</li>
+                            <li>总重量: 2吨 (100 × 20kg)</li>
+                            <li>按重量运费: 200元 (2吨 × 100元/吨)</li>
+                            <li>一口价运费: 600元 (500 + 100) <span class="text-green-600">(优先使用)</span></li>
+                            <li>合计总成本: 7000元 (6400 + 600)</li>
+                            <li>利润: 1280元 (6400 × 20%)</li>
+                            <li>总价: 8280元</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-8">
+            <a href="index.html" class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-600 transition-all-300">
+                <i class="fa fa-arrow-left mr-2"></i> 返回主页面
+            </a>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>瓷砖价格计算工具 - 运费计算测试页面</p>
+            <p class="text-gray-400 text-sm mt-2">© 2025 瓷砖价格计算工具. 保留所有权利.</p>
+        </div>
+    </footer>
+</body>
+</html>
