@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>尺寸按钮测试</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#4f46e5',
+                        success: '#10b981',
+                        danger: '#ef4444',
+                        warning: '#f59e0b',
+                        info: '#3b82f6',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .input-focus {
+                @apply focus:ring-2 focus:ring-primary/50 focus:border-primary focus:outline-none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">尺寸按钮测试</h1>
+        
+        <!-- 尺寸输入区域 -->
+        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div>
+                    <label for="tile-length" class="block text-sm font-medium text-gray-700 mb-1">长度</label>
+                    <input type="number" id="tile-length" placeholder="输入长度" min="0" step="1" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md input-focus">
+                </div>
+                <div>
+                    <label for="tile-width" class="block text-sm font-medium text-gray-700 mb-1">宽度</label>
+                    <input type="number" id="tile-width" placeholder="输入宽度" min="0" step="1" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md input-focus">
+                </div>
+                <div>
+                    <label for="tile-thickness" class="block text-sm font-medium text-gray-700 mb-1">厚度</label>
+                    <input type="number" id="tile-thickness" placeholder="输入厚度" min="0" step="1" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md input-focus">
+                </div>
+            </div>
+            
+            <!-- 单位切换 -->
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center">
+                    <input type="checkbox" id="unit-toggle" class="mr-2">
+                    <label for="unit-toggle" class="text-sm text-gray-600">长/宽单位：米</label>
+                </div>
+                <span class="text-xs text-gray-500">厚度单位：毫米</span>
+            </div>
+            
+            <!-- 常用尺寸快选 -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">常用尺寸快选</label>
+                <div class="flex flex-wrap gap-2">
+                    <button type="button" class="size-btn px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded text-sm" 
+                        data-length="300" data-width="600">300×600mm</button>
+                    <button type="button" class="size-btn px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded text-sm" 
+                        data-length="600" data-width="600">600×600mm</button>
+                    <button type="button" class="size-btn px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded text-sm" 
+                        data-length="600" data-width="1200">600×1200mm</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 日志区域 -->
+        <div class="bg-gray-900 text-gray-100 p-4 rounded-lg mb-6">
+            <h2 class="text-lg font-semibold mb-2">控制台日志</h2>
+            <div id="log-container" class="font-mono text-sm h-64 overflow-y-auto">
+                <!-- 日志将在这里显示 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let appData = {
+            calculationResult: null
+        };
+        
+        // 自定义日志函数，同时输出到控制台和页面
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logMessage = `[${timestamp}] ${message}`;
+            console.log(logMessage);
+            
+            const logContainer = document.getElementById('log-container');
+            const logEntry = document.createElement('div');
+            logEntry.textContent = logMessage;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            log('页面加载完成，初始化应用...');
+            
+            // 初始化常用尺寸按钮
+            initSizeButtons();
+            
+            log('应用初始化完成');
+        });
+        
+        // 初始化常用尺寸按钮 - 简化版本
+        function initSizeButtons() {
+            log('初始化尺寸按钮...');
+            
+            // 获取所有尺寸按钮
+            const sizeButtons = document.querySelectorAll('.size-btn');
+            log(`找到尺寸按钮数量: ${sizeButtons.length}`);
+            
+            // 为每个按钮添加点击事件
+            sizeButtons.forEach(btn => {
+                log(`为按钮 "${btn.textContent.trim()}" 添加点击事件`);
+                
+                btn.onclick = function() {
+                    const length = this.getAttribute('data-length');
+                    const width = this.getAttribute('data-width');
+                    log(`按钮 "${this.textContent.trim()}" 被点击，尺寸: ${length}×${width}`);
+                    
+                    // 设置输入框值
+                    const lengthInput = document.getElementById('tile-length');
+                    const widthInput = document.getElementById('tile-width');
+                    const unitToggle = document.getElementById('unit-toggle');
+                    
+                    if (lengthInput && widthInput && unitToggle) {
+                        log('设置尺寸输入框值...');
+                        lengthInput.value = length;
+                        widthInput.value = width;
+                        unitToggle.checked = false; // 确保单位是毫米
+                        log('尺寸设置成功');
+                    } else {
+                        log('错误: 找不到尺寸输入框或单位切换开关');
+                    }
+                    
+                    // 高亮显示选中的按钮
+                    log('更新按钮样式...');
+                    sizeButtons.forEach(b => {
+                        b.classList.remove('bg-primary', 'text-white');
+                        b.classList.add('bg-gray-100', 'hover:bg-gray-200');
+                    });
+                    this.classList.remove('bg-gray-100', 'hover:bg-gray-200');
+                    this.classList.add('bg-primary', 'text-white');
+                    log('按钮样式更新完成');
+                };
+            });
+        }
+    </script>
+</body>
+</html>
