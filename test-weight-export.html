@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试总重量导出</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <header class="mb-8">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-xl shadow-lg p-6 text-white">
+                <h1 class="text-2xl font-bold">测试总重量导出功能</h1>
+            </div>
+        </header>
+
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">测试步骤</h2>
+            <ol class="list-decimal pl-6 space-y-2">
+                <li>在计算器页面输入瓷砖尺寸：300×600×10毫米</li>
+                <li>输入数量：100片</li>
+                <li>输入单片重量：5公斤</li>
+                <li>输入运费单价：100元/吨</li>
+                <li>点击"计算价格"按钮</li>
+                <li>检查结果中是否显示总重量（应为0.50吨）</li>
+                <li>保存记录</li>
+                <li>切换到历史记录页面</li>
+                <li>导出CSV文件</li>
+                <li>检查CSV文件中总重量列是否有数据（应为500.00kg）</li>
+            </ol>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">预期结果</h2>
+            <ul class="list-disc pl-6 space-y-2">
+                <li>CSV文件中应包含"总重量(kg)"列</li>
+                <li>对于上述测试数据，总重量应为500.00kg</li>
+                <li>即使没有输入重量数据，导出时也应显示为0.00kg</li>
+            </ul>
+        </div>
+
+        <div class="mt-8 text-center">
+            <a href="index.html" class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                <i class="fa fa-arrow-left mr-2"></i> 返回计算器
+            </a>
+        </div>
+    </div>
+</body>
+</html>
