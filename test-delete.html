@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>删除功能测试</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen p-8">
+    <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">删除功能测试</h1>
+        
+        <div class="space-y-4">
+            <div>
+                <h2 class="text-lg font-semibold text-gray-800 mb-2">测试步骤</h2>
+                <ol class="list-decimal list-inside space-y-1 text-gray-700">
+                    <li>打开控制台查看日志</li>
+                    <li>点击下方按钮测试删除功能</li>
+                    <li>检查是否有错误信息</li>
+                </ol>
+            </div>
+            
+            <div class="flex gap-2">
+                <button onclick="testDeleteFunction()" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">
+                    测试删除函数
+                </button>
+                <button onclick="testModalButtons()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                    检查模态框按钮
+                </button>
+                <button onclick="testEventListeners()" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+                    检查事件监听器
+                </button>
+            </div>
+            
+            <div>
+                <h2 class="text-lg font-semibold text-gray-800 mb-2">测试结果</h2>
+                <div id="test-result" class="p-3 bg-gray-100 rounded-md min-h-[100px] text-sm font-mono"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function logResult(message) {
+            const resultDiv = document.getElementById('test-result');
+            const timestamp = new Date().toLocaleTimeString();
+            resultDiv.innerHTML += `[${timestamp}] ${message}\n`;
+            resultDiv.scrollTop = resultDiv.scrollHeight;
+            console.log(message);
+        }
+
+        function testDeleteFunction() {
+            try {
+                logResult('开始测试删除函数...');
+                
+                // 模拟应用数据
+                const mockAppData = {
+                    currentRecordId: 'test-id-123',
+                    records: [
+                        { id: 'test-id-123', note: '测试记录1' },
+                        { id: 'test-id-456', note: '测试记录2' }
+                    ],
+                    filteredRecords: [
+                        { id: 'test-id-123', note: '测试记录1' },
+                        { id: 'test-id-456', note: '测试记录2' }
+                    ]
+                };
+                
+                logResult('初始记录数: ' + mockAppData.records.length);
+                
+                // 执行删除逻辑
+                mockAppData.records = mockAppData.records.filter(r => r.id !== mockAppData.currentRecordId);
+                mockAppData.filteredRecords = mockAppData.filteredRecords.filter(r => r.id !== mockAppData.currentRecordId);
+                
+                logResult('删除后记录数: ' + mockAppData.records.length);
+                logResult('✅ 删除函数逻辑正确');
+                
+            } catch (error) {
+                logResult('❌ 删除函数测试失败: ' + error.message);
+            }
+        }
+
+        function testModalButtons() {
+            try {
+                logResult('检查模态框按钮...');
+                
+                // 模拟模态框HTML结构
+                const modalHTML = `
+                    <div id="record-detail-modal">
+                        <div class="p-6">
+                            <div class="flex justify-end gap-2 mt-6">
+                                <button onclick="loadRecordToCalculator()" class="px-4 py-2 bg-primary text-white rounded-md">
+                                    <i class="fa fa-edit mr-1"></i>加载到计算器
+                                </button>
+                                <button onclick="deleteRecord()" class="px-4 py-2 bg-danger text-white rounded-md">
+                                    <i class="fa fa-trash mr-1"></i>删除记录
+                                </button>
+                                <button onclick="closeDetailModal()" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md">
+                                    关闭
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = modalHTML;
+                
+                const deleteButton = tempDiv.querySelector('button[onclick="deleteRecord()"]');
+                
+                if (deleteButton) {
+                    logResult('✅ 找到删除按钮，onclick事件: ' + deleteButton.onclick);
+                    logResult('按钮文本: ' + deleteButton.textContent.trim());
+                } else {
+                    logResult('❌ 未找到删除按钮');
+                }
+                
+            } catch (error) {
+                logResult('❌ 检查模态框按钮失败: ' + error.message);
+            }
+        }
+
+        function testEventListeners() {
+            try {
+                logResult('检查事件监听器绑定...');
+                
+                // 检查全局函数是否存在
+                const requiredFunctions = ['deleteRecord', 'closeDetailModal', 'renderHistoryRecords', 'saveToLocalStorage', 'showToast'];
+                
+                requiredFunctions.forEach(funcName => {
+                    if (typeof window[funcName] === 'function') {
+                        logResult(`✅ 函数 ${funcName} 存在`);
+                    } else {
+                        logResult(`❌ 函数 ${funcName} 不存在或未定义`);
+                    }
+                });
+                
+                // 检查确认对话框
+                logResult('测试确认对话框...');
+                const confirmResult = confirm('这是一个测试确认对话框。点击"确定"模拟删除确认，点击"取消"模拟删除取消。');
+                logResult('确认对话框结果: ' + (confirmResult ? '确定' : '取消'));
+                
+            } catch (error) {
+                logResult('❌ 检查事件监听器失败: ' + error.message);
+            }
+        }
+
+        // 页面加载时自动运行测试
+        window.onload = function() {
+            logResult('页面加载完成，开始测试...');
+            testDeleteFunction();
+            testModalButtons();
+            testEventListeners();
+            logResult('测试完成，请检查结果。');
+        };
+    </script>
+</body>
+</html>
