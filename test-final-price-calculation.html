@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>最终价格计算逻辑测试</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        accent: '#F59E0B',
+                        dark: '#1F2937',
+                        light: '#F3F4F6'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .bg-gradient-primary {
+                background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .transition-all-300 {
+                transition: all 0.3s ease;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">最终价格计算逻辑测试</h1>
+            <p class="text-gray-600">验证最终的价格计算逻辑：总价 = (总价（不含税运） + 运费) × (1 + 税点)</p>
+        </header>
+
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">最终计算逻辑</h2>
+            <div class="bg-green-50 p-4 rounded-md border border-green-200 mb-6">
+                <p class="text-green-700 font-medium">当前所有计算逻辑已更新完毕，最终的计算流程如下：</p>
+                <ol class="list-decimal pl-5 mt-2 space-y-1 text-green-700">
+                    <li>利润 = 进货总成本 × 利润率 + 运费附加费</li>
+                    <li>总价（不含税运） = 进货总成本 × (1 + 利润率)</li>
+                    <li>税前总价 = 总价（不含税运） + 运费</li>
+                    <li>总价 = 税前总价 × (1 + 税点) = (总价（不含税运） + 运费) × (1 + 税点)</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">测试场景</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">瓷砖尺寸</label>
+                        <p>800mm × 800mm × 10mm</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">数量</label>
+                        <p>100片</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">进货价（按平方）</label>
+                        <p>100元/㎡</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">一口价运费</label>
+                        <p>500元</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">运费附加费</label>
+                        <p>100元</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">利润率</label>
+                        <p>20%</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">税点</label>
+                        <p>13%</p>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">计算结果</label>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>总面积: 64㎡</li>
+                            <li>进货总成本: 6400元</li>
+                            <li>运费总额: 600元 (500 + 100)</li>
+                            <li class="text-green-600 font-medium">利润: 6400 × 20% + 100 = 1280 + 100 = 1380元</li>
+                            <li class="text-blue-600 font-medium">总价（不含税运）: 6400 × (1 + 20%) = 7680元</li>
+                            <li>税前总价: 7680 + 600 = 8280元</li>
+                            <li>税额: 8280 × 13% = 1076.40元</li>
+                            <li class="text-primary font-bold">总价: 8280 × (1 + 13%) = 9356.40元</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">交互式验证表单</h2>
+            <p class="mb-4">填写以下表单，验证最终的价格计算逻辑：</p>
+            
+            <form id="verify-form" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">进货总成本 (元)</label>
+                        <input type="number" id="total-cost" value="6400" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">利润率 (%)</label>
+                        <input type="number" id="profit-margin" value="20" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">运费 (元)</label>
+                        <input type="number" id="shipping-cost" value="600" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">税点 (%)</label>
+                        <input type="number" id="tax-rate" value="13" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                </div>
+                
+                <button type="button" id="calculate-btn" class="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-all-300">
+                    计算验证
+                </button>
+            </form>
+            
+            <div id="result" class="mt-6 hidden">
+                <div class="bg-gray-50 p-4 rounded-md">
+                    <h3 class="font-medium text-gray-800 mb-2">计算结果</h3>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <p class="text-sm text-gray-600">进货总成本:</p>
+                            <p id="calc-total-cost" class="font-medium text-gray-800"></p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">总价（不含税运） (进货总成本 × (1 + 利润率)):</p>
+                            <p id="calc-price-without-tax-shipping" class="font-medium text-blue-600"></p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">税前总价 (总价（不含税运） + 运费):</p>
+                            <p id="calc-price-before-tax" class="font-medium text-gray-800"></p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">税额 (税前总价 × 税点):</p>
+                            <p id="calc-tax-amount" class="font-medium text-gray-800"></p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">总价 ((总价（不含税运） + 运费) × (1 + 税点)):</p>
+                            <p id="calc-total-price" class="font-bold text-xl text-primary"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">计算逻辑总结</h2>
+            <div class="space-y-4">
+                <p>经过多次调整，瓷砖价格计算工具的计算逻辑现已完全符合要求。以下是最终的计算逻辑总结：</p>
+                
+                <div class="bg-blue-50 p-4 rounded-md border border-blue-200">
+                    <h3 class="font-medium text-blue-800 mb-2">1. 基础计算</h3>
+                    <ul class="list-disc pl-5 space-y-1 text-blue-700">
+                        <li>单片面积 = 长度 × 宽度</li>
+                        <li>总面积 = 单片面积 × 数量 × (1 + 损耗率)</li>
+                        <li>总数量 = 面积 ÷ 单片面积 × (1 + 损耗率)（向上取整）</li>
+                        <li>总重量 = 单砖重量 × 总数量</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-md border border-green-200">
+                    <h3 class="font-medium text-green-800 mb-2">2. 成本计算</h3>
+                    <ul class="list-disc pl-5 space-y-1 text-green-700">
+                        <li>进货总成本 = min(总面积 × 进货价（元/㎡）, 总数量 × 进货价（元/片）)</li>
+                        <li>运费 = 一口价运费 + 运费附加费 或 总重量（吨） × 运费单价（元/吨）</li>
+                        <li>合计总成本 = 进货总成本 + 一口价运费（不含附加费） 或 进货总成本 + 按重量计算的运费</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-purple-50 p-4 rounded-md border border-purple-200">
+                    <h3 class="font-medium text-purple-800 mb-2">3. 价格计算</h3>
+                    <ul class="list-disc pl-5 space-y-1 text-purple-700">
+                        <li>利润 = 进货总成本 × 利润率 + 运费附加费</li>
+                        <li>总价（不含税运） = 进货总成本 × (1 + 利润率)</li>
+                        <li>税前总价 = 总价（不含税运） + 运费</li>
+                        <li>总价 = 税前总价 × (1 + 税点) = (总价（不含税运） + 运费) × (1 + 税点)</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-yellow-50 p-4 rounded-md border border-yellow-200">
+                    <h3 class="font-medium text-yellow-800 mb-2">4. 单价计算</h3>
+                    <ul class="list-disc pl-5 space-y-1 text-yellow-700">
+                        <li>含运费单价（片） = 总价 ÷ 总数量</li>
+                        <li>不含运费单价（片） = 总价（不含税运） ÷ 总数量</li>
+                        <li>含运费单价（㎡） = 总价 ÷ 总面积</li>
+                        <li>不含运费单价（㎡） = 总价（不含税运） ÷ 总面积</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-8">
+            <a href="index.html" class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-600 transition-all-300">
+                <i class="fa fa-arrow-left mr-2"></i> 返回主页面
+            </a>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>瓷砖价格计算工具 - 最终价格计算逻辑测试</p>
+            <p class="text-gray-400 text-sm mt-2">© 2025 瓷砖价格计算工具. 保留所有权利.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('calculate-btn').addEventListener('click', function() {
+            const totalCost = parseFloat(document.getElementById('total-cost').value) || 0;
+            const profitMargin = parseFloat(document.getElementById('profit-margin').value) || 0;
+            const shippingCost = parseFloat(document.getElementById('shipping-cost').value) || 0;
+            const taxRate = parseFloat(document.getElementById('tax-rate').value) || 0;
+            
+            // 计算总价（不含税运）
+            const priceWithoutTaxAndShipping = totalCost * (1 + profitMargin / 100);
+            
+            // 计算税前总价
+            const priceBeforeTax = priceWithoutTaxAndShipping + shippingCost;
+            
+            // 计算税额和总价
+            const taxAmount = priceBeforeTax * (taxRate / 100);
+            const totalPrice = priceBeforeTax + taxAmount;
+            
+            // 显示结果
+            document.getElementById('calc-total-cost').textContent = `¥${totalCost.toFixed(2)}`;
+            document.getElementById('calc-price-without-tax-shipping').textContent = `¥${priceWithoutTaxAndShipping.toFixed(2)}`;
+            document.getElementById('calc-price-before-tax').textContent = `¥${priceBeforeTax.toFixed(2)}`;
+            document.getElementById('calc-tax-amount').textContent = `¥${taxAmount.toFixed(2)}`;
+            document.getElementById('calc-total-price').textContent = `¥${totalPrice.toFixed(2)}`;
+            
+            document.getElementById('result').classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
