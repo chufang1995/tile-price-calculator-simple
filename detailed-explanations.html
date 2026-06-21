@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计算结果详细说明 - 瓷砖价格计算工具</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#3b82f6',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .input-focus {
+                @apply focus:ring-2 focus:ring-primary/50 focus:border-primary focus:outline-none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-5xl">
+        <!-- 标题 -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-primary mb-2">计算结果详细说明</h1>
+            <p class="text-gray-600">瓷砖价格计算工具中各项结果的计算方式详解</p>
+        </header>
+
+        <!-- 主内容区 -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <!-- 计算说明 -->
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">基础信息计算</h2>
+                
+                <div class="space-y-6">
+                    <!-- 单片面积 -->
+                    <div id="single-area" class="bg-blue-50 p-4 rounded-lg">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-lg font-medium text-blue-800">1. 单片面积</h3>
+                            <span class="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded">基础信息</span>
+                        </div>
+                        <div class="bg-white p-3 rounded mb-2">
+                            <p class="font-mono text-sm">单片面积 = 长度 × 宽度</p>
+                        </div>
+                        <p class="text-gray-600 text-sm">系统会自动将毫米转换为米进行计算（1米 = 1000毫米）</p>
+                        <div class="mt-3 bg-gray-50 p-3 rounded">
+                            <p class="text-sm font-medium">示例：</p>
+                            <p class="text-sm text-gray-600">600×600毫米的瓷砖：</p>
+                            <p class="text-sm font-mono">0.6米 × 0.6米 = 0.36 ㎡/片</p>
+                        </div>
+                    </div>
+
+                    <!-- 总片数 -->
+                    <div id="total-pieces" class="bg-blue-50 p-4 rounded-lg">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-lg font-medium text-blue-800">2. 总片数</h3>
+                            <span class="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded">基础信息</span>
+                        </div>
+                        <div class="bg-white p-3 rounded mb-2">
+                            <p class="font-mono text-sm">情况1（输入采购数量）：总片数 = 采购数量 × (1 + 损耗率/100)</p>
+                            <p class="font-mono text-sm mt-1">情况2（输入采购面积）：总片数 = 采购面积 ÷ 单片面积 × (1 + 损耗率/100)</p>
+                        </div>
+                        <p class="text-gray-600 text-sm">系统会根据损耗率自动增加所需片数，确保采购量充足</p>
+                        <div class="mt-3 bg-gray-50 p-3 rounded">
+                            <p class="text-sm font-medium">示例：</p>
+                            <p class="text-sm text-gray-600">采购100片瓷砖，损耗率5%：</p>
+                            <p class="text-sm font-mono">100片 × (1 + 5/100) = 105片</p>
+                        </div>
+                    </div>
+
+                    <!-- 总平方数 -->
+                    <div id="total-area" class="bg-blue-50 p-4 rounded-lg">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-lg font-medium text-blue-800">3. 总平方数</h3>
+                            <span class="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded">基础信息</span>
+                        </div>
+                        <div class="bg-white p-3 rounded mb-2">
+                            <p class="font-mono text-sm">情况1（输入采购数量）：总平方数 = 采购数量 × 单片面积 × (1 + 损耗率/100)</p>
+                            <p class="font-mono text-sm mt-1">情况2（输入采购面积）：总平方数 = 采购面积</p>
+                        </div>
+                        <p class="text-gray-600 text-sm">总平方数是实际需要的瓷砖面积，已包含损耗</p>
+                        <div class="mt-3 bg-gray-50 p-3 rounded">
+                            <p class="text-sm font-medium">示例：</p>
+                            <p class="text-sm text-gray-600">100片0.36㎡的瓷砖，损耗率5%：</p>
+                            <p class="text-sm font-mono">100片 × 0.36㎡ × (1 + 5/100) = 37.8㎡</p>
+                        </div>
+                    </div>
+
+                    <!-- 总重量 -->
+                    <div id="total-weight" class="bg-blue-50 p-4 rounded-lg">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-lg font-medium text-blue-800">4. 总重量</h3>
+                            <span class="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded">基础信息</span>
+                        </div>
+                        <div class="bg-white p-3 rounded mb-2">
+                            <p class="font-mono text-sm">总重量 = 总片数 × 单片重量</p>
+                        </div>
+                        <p class="text-gray-600 text-sm">仅在输入单片重量时显示，系统会同时显示千克(kg)和吨(t)单位</p>
+                        <div class="mt-3 bg-gray-50 p-3 rounded">
+                            <p class="text-sm font-medium">示例：</p>
+                            <p class="text-sm text-gray-600">100片3.5kg的瓷砖：</p>
+                            <p class="text-sm font-mono">100片 × 3.5kg = 350kg (0.35吨)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 成本信息计算 -->
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">成本与利润计算</h2>
+                
+                <div class="space-y-6">
+                    <!-- 进货总成本 -->
+                    <div id="total-cost" class="bg-green-50 p-4 rounded-lg">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-lg font-medium text-green-800">5. 进货总成本</h3>
+                            <span class="text-xs bg-green-200 text-green-800 px-2 py-1 rounded">成本计算</span>
+                        </div>
+                        <div class="bg-white p-3 rounded mb-2">
+                            <p class="font-mono text-sm">情况1（同时输入两种价格）：进货总成本 = min(总平方数×平方单价, 总片数×单片单价)</p>
+                            <p class="font-mono text-sm mt-1">情况2（仅输入平方单价）：进货总成本 = 总平方数 × 平方单价</p>
+                            <p class="font-mono text-sm mt-1">情况3（仅输入单片单价）：进货总成本 = 总片数 × 单片单价</p>
+                        </div>
+                        <p class="text-gray-600 text-sm">系统会自动选择最划算的计算方式，并在结果中显示使用的计算方法</p>
+                        <div class="mt-3 bg-gray-50 p-3 rounded">
+                            <p class="text-sm font-medium">示例：</p>
+                            <p class="text-sm text-gray-600">37.8㎡瓷砖，平方单价120元/㎡，单片单价45元/片：</p>
+                            <p class="text-sm font-mono">按平方：37.8㎡ × 120元/㎡ = 4,536元</p>
+                            <p class="text-sm font-mono">按片：105片 × 45元/片 = 4,725元</p>
+                            <p class="text-sm font-mono font-medium">系统选择：4,536元（按平方更划算）</p>
+                        </div>
+                    </div>
+
+                    <!-- 合计总成本 -->
+                    <div id="total-cost-with-shipping" class="bg-green-50 p-4 rounded-lg">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-lg font-medium text-green-800">6. 合计总成本</h3>
+                            <span class="text-xs bg-green-200 text-green-800 px-2 py-1 rounded">成本计算</span>
+                        </div>
+                        <div class="bg-white p-3 rounded mb-2">
+                            <p class="font-mono text-sm">合计总成本 = 进货总成本 + 运费</p>
+                        </div>
+                        <p class="text-gray-600 text-sm">包含了所有采购相关的成本，是定价的基础</p>
+                        <div class="mt-3 bg-gray-50 p-3 rounded">
+                            <p class="text-sm font-medium">示例：</p>
+                            <p class="text-sm text-gray-600">进货总成本4,536元，运费35元：</p>
+                            <p class="text-sm font-mono">4,536元 + 35元 = 4,571元</p>
+                        </div>
+                    </div>
+
+                    <!-- 运费 -->
+                    <div id="shipping-cost" class="bg-green-50 p-4 rounded-lg">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-lg font-medium text-green-800">7. 运费</h3>
+                            <span class="text-xs bg-green-200 text-green-800 px-2 py-1 rounded">成本计算</span>
+                        </div>
+                        <div class="bg-white p-3 rounded mb-2">
+                            <p class="font-mono text-sm">运费 = (总片数 × 单片重量 ÷ 1000) × 运费单价</p>
+                        </div>
+                        <p class="text-gray-600 text-sm">仅在同时输入单片重量和运费单价时显示，系统会自动将重量从千克转换为吨</p>
+                        <div class="mt-3 bg-gray-50 p-3 rounded">
+                            <p class="text-sm font-medium">示例：</p>
+                            <p class="text-sm text-gray-600">105片3.5kg的瓷砖，运费100元/吨：</p>
+                            <p class="text-sm font-mono">(105片 × 3.5kg ÷ 1000) × 100元/吨 = 36.75元</p>
+                        </div>
+                    </div>
+
+                    <!-- 利润 -->
+                    <div id="profit" class="bg-green-50 p-4 rounded-lg">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-lg font-medium text-green-800">8. 利润</h3>
+                            <span class="text-xs bg-green-200 text-green-800 px-2 py-1 rounded">利润计算</span>
+                        </div>
+                        <div class="bg-white p-3 rounded mb-2">
+                            <p class="font-mono text-sm">利润 = 进货总成本 × (利润率/100)</p>
+                        </div>
+                        <p class="text-gray-600 text-sm">利润仅基于进货总成本计算，不包括运费。这样可以确保即使在运费波动的情况下，利润率也能保持稳定</p>
+                        <div class="mt-3 bg-gray-50 p-3 rounded">
+                            <p class="text-sm font-medium">示例：</p>
+                            <p class="text-sm text-gray-600">进货总成本4,536元，利润率30%：</p>
+                            <p class="text-sm font-mono">4,536元 × (30/100) = 1,360.80元</p>
+                        </div>
+                    </div>
+
+                    <!-- 总价 -->
+                    <div id="total-price" class="bg-green-50 p-4 rounded-lg">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-lg font-medium text-green-800">9. 总价</h3>
+                            <span class="text-xs bg-green-200 text-green-800 px-2 py-1 rounded">最终价格</span>
+                        </div>
+                        <div class="bg-white p-3 rounded mb-2">
+                            <p class="font-mono text-sm">总价 = 合计总成本 + 利润</p>
+                        </div>
+                        <p class="text-gray-600 text-sm">这是客户需要支付的最终总价格</p>
+                        <div class="mt-3 bg-gray-50 p-3 rounded">
+                            <p class="text-sm font-medium">示例：</p>
+                            <p class="text-sm text-gray-600">合计总成本4,571元，利润1,360.80元：</p>
+                            <p class="text-sm font-mono">4,571元 + 1,360.80元 = 5,931.80元</p>
+                        </div>
+                    </div>
+
+                    <!-- 单价（按片） -->
+                    <div id="unit-price-piece" class="bg-green-50 p-4 rounded-lg">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-lg font-medium text-green-800">10. 单价（按片）</h3>
+                            <span class="text-xs bg-green-200 text-green-800 px-2 py-1 rounded">最终价格</span>
+                        </div>
+                        <div class="bg-white p-3 rounded mb-2">
+                            <p class="font-mono text-sm">单价（按片） = 总价 ÷ 总片数</p>
+                        </div>
+                        <p class="text-gray-600 text-sm">每片瓷砖的最终销售价格</p>
+                        <div class="mt-3 bg-gray-50 p-3 rounded">
+                            <p class="text-sm font-medium">示例：</p>
+                            <p class="text-sm text-gray-600">总价5,931.80元，总片数105片：</p>
+                            <p class="text-sm font-mono">5,931.80元 ÷ 105片 = 56.49元/片</p>
+                        </div>
+                    </div>
+
+                    <!-- 单价（按平方） -->
+                    <div id="unit-price-sqm" class="bg-green-50 p-4 rounded-lg">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-lg font-medium text-green-800">11. 单价（按平方）</h3>
+                            <span class="text-xs bg-green-200 text-green-800 px-2 py-1 rounded">最终价格</span>
+                        </div>
+                        <div class="bg-white p-3 rounded mb-2">
+                            <p class="font-mono text-sm">单价（按平方） = 总价 ÷ 总平方数</p>
+                        </div>
+                        <p class="text-gray-600 text-sm">每平方米瓷砖的最终销售价格</p>
+                        <div class="mt-3 bg-gray-50 p-3 rounded">
+                            <p class="text-sm font-medium">示例：</p>
+                            <p class="text-sm text-gray-600">总价5,931.80元，总平方数37.8㎡：</p>
+                            <p class="text-sm font-mono">5,931.80元 ÷ 37.8㎡ = 156.93元/㎡</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 完整计算流程 -->
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">完整计算流程</h2>
+                <div class="relative">
+                    <!-- 流程线 -->
+                    <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200"></div>
+                    
+                    <!-- 步骤 -->
+                    <div class="space-y-6 relative">
+                        <div class="flex">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center z-10">1</div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-800">输入基础参数</h3>
+                                <p class="text-gray-600 mt-1">瓷砖尺寸、采购数量/面积、价格信息、重量、运费、利润率等</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center z-10">2</div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-800">计算基础数据</h3>
+                                <p class="text-gray-600 mt-1">计算单片面积、总片数、总平方数、总重量</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center z-10">3</div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-800">计算成本</h3>
+                                <p class="text-gray-600 mt-1">计算进货总成本、运费、合计总成本</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center z-10">4</div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-800">计算利润</h3>
+                                <p class="text-gray-600 mt-1">基于进货总成本计算利润</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center z-10">5</div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-800">计算最终价格</h3>
+                                <p class="text-gray-600 mt-1">计算总价和各种单价</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 综合示例 -->
+            <div>
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">综合示例</h2>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="font-medium text-gray-800 mb-2">输入参数：</h3>
+                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600">
+                        <li>✓ 瓷砖尺寸：600×600毫米</li>
+                        <li>✓ 采购数量：100片</li>
+                        <li>✓ 进货单价：120元/㎡</li>
+                        <li>✓ 单片重量：3.5kg</li>
+                        <li>✓ 运费：100元/吨</li>
+                        <li>✓ 利润率：30%</li>
+                        <li>✓ 损耗率：5%</li>
+                    </ul>
+                    
+                    <h3 class="font-medium text-gray-800 mt-4 mb-2">计算过程：</h3>
+                    <div class="space-y-2 text-sm">
+                        <p><strong>1. 单片面积：</strong>0.6m × 0.6m = 0.36㎡</p>
+                        <p><strong>2. 总片数：</strong>100片 × (1 + 5/100) = 105片</p>
+                        <p><strong>3. 总平方数：</strong>105片 × 0.36㎡ = 37.8㎡</p>
+                        <p><strong>4. 总重量：</strong>105片 × 3.5kg = 367.5kg (0.3675吨)</p>
+                        <p><strong>5. 进货总成本：</strong>37.8㎡ × 120元/㎡ = 4,536元</p>
+                        <p><strong>6. 运费：</strong>0.3675吨 × 100元/吨 = 36.75元</p>
+                        <p><strong>7. 合计总成本：</strong>4,536元 + 36.75元 = 4,572.75元</p>
+                        <p><strong>8. 利润：</strong>4,536元 × 30% = 1,360.80元</p>
+                        <p><strong>9. 总价：</strong>4,572.75元 + 1,360.80元 = 5,933.55元</p>
+                        <p><strong>10. 单价（按片）：</strong>5,933.55元 ÷ 105片 = 56.51元/片</p>
+                        <p><strong>11. 单价（按平方）：</strong>5,933.55元 ÷ 37.8㎡ = 156.97元/㎡</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 返回按钮 -->
+        <div class="text-center">
+            <button onclick="window.location.href='index.html'" class="px-6 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition">
+                <i class="fa fa-arrow-left mr-2"></i>返回计算器
+            </button>
+        </div>
+    </div>
+</body>
+</html>
