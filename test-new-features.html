@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试新功能</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <header class="mb-8">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-xl shadow-lg p-6 text-white">
+                <h1 class="text-2xl font-bold">测试新功能</h1>
+            </div>
+        </header>
+
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">测试步骤</h2>
+            <ol class="list-decimal pl-6 space-y-2">
+                <li>验证标题在手机上是否显示在一行</li>
+                <li>测试一口价运费功能：
+                    <ul class="list-disc pl-6 mt-2">
+                        <li>输入瓷砖尺寸和数量</li>
+                        <li>不输入单片重量和按重量运费</li>
+                        <li>输入一口价运费（如100元）</li>
+                        <li>点击"计算价格"按钮</li>
+                        <li>验证运费是否正确显示</li>
+                    </ul>
+                </li>
+                <li>测试运费附加费功能：
+                    <ul class="list-disc pl-6 mt-2">
+                        <li>输入瓷砖尺寸和数量</li>
+                        <li>输入进货成本</li>
+                        <li>输入运费附加费（如50元）</li>
+                        <li>点击"计算价格"按钮</li>
+                        <li>验证附加费是否计入利润</li>
+                    </ul>
+                </li>
+                <li>测试组合运费功能：
+                    <ul class="list-disc pl-6 mt-2">
+                        <li>输入瓷砖尺寸、数量和单片重量</li>
+                        <li>输入按重量运费单价</li>
+                        <li>输入一口价运费</li>
+                        <li>输入运费附加费</li>
+                        <li>点击"计算价格"按钮</li>
+                        <li>验证总运费是否为按重量运费+一口价运费</li>
+                        <li>验证附加费是否计入利润</li>
+                    </ul>
+                </li>
+                <li>测试保存和加载记录功能：
+                    <ul class="list-disc pl-6 mt-2">
+                        <li>完成计算后保存记录</li>
+                        <li>在历史记录中查看该记录</li>
+                        <li>点击"加载到计算器"按钮</li>
+                        <li>验证所有运费相关字段是否正确加载</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">预期结果</h2>
+            <ul class="list-disc pl-6 space-y-2">
+                <li>标题在手机上应显示在一行</li>
+                <li>一口价运费应正确添加到总运费中</li>
+                <li>运费附加费应计入利润计算</li>
+                <li>总运费 = 按重量运费 + 一口价运费</li>
+                <li>利润 = 进货成本 × 利润率 + 运费附加费</li>
+                <li>所有新添加的字段应正确保存和加载</li>
+            </ul>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">计算公式</h2>
+            <div class="space-y-3">
+                <div class="p-3 bg-blue-50 rounded-lg">
+                    <p class="font-medium">总运费 = 按重量运费 + 一口价运费 + 运费附加费</p>
+                </div>
+                <div class="p-3 bg-green-50 rounded-lg">
+                    <p class="font-medium">利润 = 进货成本 × 利润率</p>
+                </div>
+                <div class="p-3 bg-purple-50 rounded-lg">
+                    <p class="font-medium">总价 = 进货成本 + 总运费 + 利润</p>
+                </div>
+                <div class="p-3 bg-yellow-50 rounded-lg">
+                    <p class="font-medium">单价（不含运费） = (进货成本 + 利润) ÷ 数量/面积</p>
+                </div>
+                <div class="p-3 bg-red-50 rounded-lg">
+                    <p class="font-medium">单价（含运费） = 总价 ÷ 数量/面积</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 text-center">
+            <a href="index.html" class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                <i class="fa fa-arrow-left mr-2"></i> 返回计算器
+            </a>
+        </div>
+    </div>
+</body>
+</html>
