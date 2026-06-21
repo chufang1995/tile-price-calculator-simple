@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>合计总成本计算说明 - 瓷砖价格计算工具</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#3b82f6',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .input-focus {
+                @apply focus:ring-2 focus:ring-primary/50 focus:border-primary focus:outline-none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-5xl">
+        <!-- 标题 -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-primary mb-2">合计总成本计算说明</h1>
+            <p class="text-gray-600">详细解释瓷砖价格计算工具中合计总成本的计算方式</p>
+        </header>
+
+        <!-- 主内容区 -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <!-- 计算说明 -->
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">计算方式</h2>
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+                    <p class="text-lg font-medium text-blue-800">合计总成本 = 进货总成本 + 运费</p>
+                </div>
+                
+                <div class="mt-6 space-y-4">
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-800">1. 进货总成本的计算</h3>
+                        <p class="text-gray-600 mt-2">进货总成本根据您输入的价格信息计算，有三种情况：</p>
+                        <ul class="list-disc pl-6 mt-2 space-y-2 text-gray-600">
+                            <li><strong>同时输入了按平方和按片的价格：</strong>系统会自动选择更划算的计算方式</li>
+                            <li><strong>只输入按平方的价格：</strong>进货总成本 = 总平方数 × 进货单价(元/㎡)</li>
+                            <li><strong>只输入按片的价格：</strong>进货总成本 = 总片数 × 进货单价(元/片)</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-800">2. 运费的计算</h3>
+                        <p class="text-gray-600 mt-2">运费仅在您同时输入了单片重量和运费单价时才会计算：</p>
+                        <div class="bg-gray-50 p-3 rounded mt-2">
+                            <p class="font-mono text-sm">运费 = (总片数 × 单片重量 ÷ 1000) × 运费单价(元/吨)</p>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-2">注：系统会将重量从千克转换为吨进行计算</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 计算流程 -->
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">完整计算流程</h2>
+                <div class="relative">
+                    <!-- 流程线 -->
+                    <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200"></div>
+                    
+                    <!-- 步骤 -->
+                    <div class="space-y-6 relative">
+                        <div class="flex">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center z-10">1</div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-800">计算基础数据</h3>
+                                <p class="text-gray-600 mt-1">根据瓷砖尺寸和采购数量/面积，计算单片面积、总片数和总平方数</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center z-10">2</div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-800">计算进货总成本</h3>
+                                <p class="text-gray-600 mt-1">根据选择的价格计算方式，得出进货总成本</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center z-10">3</div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-800">计算运费（可选）</h3>
+                                <p class="text-gray-600 mt-1">如有重量和运费信息，计算运输成本</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center z-10">4</div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-800">计算合计总成本</h3>
+                                <p class="text-gray-600 mt-1">进货总成本 + 运费 = 合计总成本</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center z-10">5</div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-800">计算利润</h3>
+                                <p class="text-gray-600 mt-1">利润 = 进货总成本 × 利润率（注意：利润仅基于进货成本计算，不包括运费）</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center z-10">6</div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-800">计算最终价格</h3>
+                                <p class="text-gray-600 mt-1">总价 = 合计总成本 + 利润</p>
+                                <p class="text-gray-600 mt-1">单价 = 总价 ÷ 数量/面积</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 示例计算 -->
+            <div>
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">示例计算</h2>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="font-medium text-gray-800 mb-2">输入参数：</h3>
+                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600">
+                        <li>✓ 瓷砖尺寸：600×600毫米</li>
+                        <li>✓ 采购数量：100片</li>
+                        <li>✓ 进货单价：120元/㎡</li>
+                        <li>✓ 单片重量：3.5kg</li>
+                        <li>✓ 运费：100元/吨</li>
+                        <li>✓ 利润率：30%</li>
+                    </ul>
+                    
+                    <h3 class="font-medium text-gray-800 mt-4 mb-2">计算过程：</h3>
+                    <div class="space-y-2 text-sm">
+                        <p><strong>1. 单片面积：</strong>0.6m × 0.6m = 0.36㎡</p>
+                        <p><strong>2. 进货总成本：</strong>100片 × 0.36㎡ × 120元/㎡ = 4,320元</p>
+                        <p><strong>3. 运费：</strong>(100片 × 3.5kg ÷ 1000) × 100元/吨 = 35元</p>
+                        <p><strong>4. 合计总成本：</strong>4,320元 + 35元 = 4,355元</p>
+                        <p><strong>5. 利润：</strong>4,320元 × 30% = 1,296元</p>
+                        <p><strong>6. 总价：</strong>4,355元 + 1,296元 = 5,651元</p>
+                    </div>
+                    
+                    <h3 class="font-medium text-gray-800 mt-4 mb-2">计算结果：</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                        <p><strong>进货总成本：</strong>¥4,320.00</p>
+                        <p><strong>运费：</strong>¥35.00</p>
+                        <p><strong class="text-secondary">合计总成本：</strong><span class="text-secondary font-medium">¥4,355.00</span></p>
+                        <p><strong>利润：</strong>¥1,296.00</p>
+                        <p><strong>总价：</strong>¥5,651.00</p>
+                        <p><strong>单价（按片）：</strong>¥56.51/片</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 返回按钮 -->
+        <div class="text-center">
+            <button onclick="window.location.href='index.html'" class="px-6 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition">
+                <i class="fa fa-arrow-left mr-2"></i>返回计算器
+            </button>
+        </div>
+    </div>
+</body>
+</html>
