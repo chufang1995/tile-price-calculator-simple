@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>合计总成本计算说明（更新版）</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        accent: '#F59E0B',
+                        dark: '#1F2937',
+                        light: '#F3F4F6'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .bg-gradient-primary {
+                background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .transition-all-300 {
+                transition: all 0.3s ease;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">合计总成本计算说明（更新版）</h1>
+            <p class="text-gray-600">详细解释合计总成本的计算逻辑</p>
+        </header>
+
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">更新后的计算逻辑</h2>
+            <div class="bg-blue-50 p-4 rounded-md border border-blue-200 mb-6">
+                <p class="text-blue-700 font-medium">合计总成本 = 进货总成本 + 一口价运费（不含附加费） 或 合计总成本 = 进货总成本 + （重量 × 运费单价/吨）</p>
+            </div>
+            
+            <p class="mb-4">根据最新的要求，合计总成本的计算逻辑已更新。主要变化是：<strong>当使用一口价运费时，运费附加费不再计入合计总成本</strong>。</p>
+            
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-lg font-medium text-gray-800 mb-2">1. 进货总成本计算</h3>
+                    <p class="mb-2">进货总成本根据您选择的计算方式不同而不同：</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>按平方计算：进货总成本 = 总面积 × 进货价（元/㎡）</li>
+                        <li>按片计算：进货总成本 = 总数量 × 进货价（元/片）</li>
+                        <li>如果同时设置了两种价格，则系统会自动选择更划算的方式</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-medium text-gray-800 mb-2">2. 运费计算</h3>
+                    <p class="mb-2">运费有两种计算方式，系统会根据您的设置自动选择：</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>一口价运费：运费 = 一口价运费 + 运费附加费</li>
+                        <li>按重量运费：运费 = 总重量（吨） × 运费单价（元/吨）</li>
+                        <li>如果同时设置了两种运费，则系统会优先使用一口价运费</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-medium text-gray-800 mb-2">3. 合计总成本计算（更新重点）</h3>
+                    <p class="mb-2">合计总成本的计算逻辑已更新：</p>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li>
+                            <strong>使用一口价运费时：</strong>
+                            <div class="bg-yellow-50 p-3 rounded-md mt-1">
+                                合计总成本 = 进货总成本 + 一口价运费（<span class="text-red-600 font-medium">不包含运费附加费</span>）
+                            </div>
+                        </li>
+                        <li>
+                            <strong>使用按重量运费时：</strong>
+                            <div class="bg-green-50 p-3 rounded-md mt-1">
+                                合计总成本 = 进货总成本 + 按重量计算的运费
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-medium text-gray-800 mb-2">4. 利润和总价计算</h3>
+                    <p class="mb-2">利润和总价的计算逻辑保持不变：</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>利润 = 进货总成本 × 利润率（%）</li>
+                        <li>总价 = 合计总成本 + 利润</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">示例说明</h2>
+            
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-lg font-medium text-gray-800 mb-2">示例1：使用一口价运费</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="mb-2 font-medium">输入参数：</p>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>瓷砖尺寸：800mm × 800mm × 10mm</li>
+                                <li>数量：100片</li>
+                                <li>进货价（按平方）：100元/㎡</li>
+                                <li>一口价运费：500元</li>
+                                <li>运费附加费：100元</li>
+                                <li>利润率：20%</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="mb-2 font-medium">计算过程：</p>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>总面积：64㎡</li>
+                                <li>进货总成本：64㎡ × 100元/㎡ = 6400元</li>
+                                <li>运费总额：500元 + 100元 = 600元</li>
+                                <li class="text-green-600 font-medium">合计总成本：6400元 + 500元 = 6900元（不含附加费）</li>
+                                <li>利润：6400元 × 20% = 1280元</li>
+                                <li>总价：6900元 + 1280元 = 8180元</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-medium text-gray-800 mb-2">示例2：使用按重量运费</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="mb-2 font-medium">输入参数：</p>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>瓷砖尺寸：800mm × 800mm × 10mm</li>
+                                <li>数量：100片</li>
+                                <li>进货价（按平方）：100元/㎡</li>
+                                <li>单砖重量：20kg</li>
+                                <li>按重量运费：100元/吨</li>
+                                <li>利润率：20%</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="mb-2 font-medium">计算过程：</p>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>总面积：64㎡</li>
+                                <li>进货总成本：64㎡ × 100元/㎡ = 6400元</li>
+                                <li>总重量：100片 × 20kg = 2000kg = 2吨</li>
+                                <li>运费：2吨 × 100元/吨 = 200元</li>
+                                <li class="text-green-600 font-medium">合计总成本：6400元 + 200元 = 6600元</li>
+                                <li>利润：6400元 × 20% = 1280元</li>
+                                <li>总价：6600元 + 1280元 = 7880元</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-8">
+            <a href="index.html" class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-600 transition-all-300">
+                <i class="fa fa-arrow-left mr-2"></i> 返回主页面
+            </a>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>瓷砖价格计算工具 - 合计总成本计算说明（更新版）</p>
+            <p class="text-gray-400 text-sm mt-2">© 2025 瓷砖价格计算工具. 保留所有权利.</p>
+        </div>
+    </footer>
+</body>
+</html>
