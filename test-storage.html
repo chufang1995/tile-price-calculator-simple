@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalStorage 测试</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen p-8">
+    <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">LocalStorage 功能测试</h1>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">测试数据</label>
+                <input type="text" id="test-data" value="测试数据" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+            </div>
+            
+            <div class="flex gap-2">
+                <button onclick="testSave()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                    保存数据
+                </button>
+                <button onclick="testLoad()" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+                    读取数据
+                </button>
+                <button onclick="testClear()" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">
+                    清空数据
+                </button>
+            </div>
+            
+            <div>
+                <h2 class="text-lg font-semibold text-gray-800 mb-2">测试结果</h2>
+                <div id="test-result" class="p-3 bg-gray-100 rounded-md min-h-[100px] text-sm font-mono"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function logResult(message) {
+            const resultDiv = document.getElementById('test-result');
+            const timestamp = new Date().toLocaleTimeString();
+            resultDiv.innerHTML += `[${timestamp}] ${message}\n`;
+            resultDiv.scrollTop = resultDiv.scrollHeight;
+        }
+
+        function testSave() {
+            try {
+                const data = document.getElementById('test-data').value;
+                const testObject = {
+                    id: Date.now().toString(),
+                    timestamp: new Date().toISOString(),
+                    data: data,
+                    testArray: [1, 2, 3, 4, 5]
+                };
+                
+                logResult('开始保存数据...');
+                localStorage.setItem('testStorageItem', JSON.stringify(testObject));
+                logResult('✅ 数据保存成功！');
+                
+                // 检查是否真的保存成功
+                const stored = localStorage.getItem('testStorageItem');
+                if (stored) {
+                    logResult('✅ 验证：数据已成功存储在localStorage中');
+                    logResult('存储的数据大小：' + new Blob([stored]).size + ' bytes');
+                } else {
+                    logResult('❌ 验证失败：无法读取刚保存的数据');
+                }
+            } catch (error) {
+                logResult('❌ 保存失败：' + error.message);
+                logResult('错误类型：' + error.name);
+            }
+        }
+
+        function testLoad() {
+            try {
+                logResult('开始读取数据...');
+                const stored = localStorage.getItem('testStorageItem');
+                
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    logResult('✅ 数据读取成功！');
+                    logResult('数据内容：' + JSON.stringify(parsed, null, 2));
+                } else {
+                    logResult('❌ 未找到存储的数据');
+                }
+            } catch (error) {
+                logResult('❌ 读取失败：' + error.message);
+            }
+        }
+
+        function testClear() {
+            try {
+                logResult('开始清空数据...');
+                localStorage.removeItem('testStorageItem');
+                logResult('✅ 数据已清空');
+                
+                // 验证
+                const remaining = localStorage.getItem('testStorageItem');
+                if (!remaining) {
+                    logResult('✅ 验证：数据已成功删除');
+                } else {
+                    logResult('❌ 验证失败：数据仍然存在');
+                }
+            } catch (error) {
+                logResult('❌ 清空失败：' + error.message);
+            }
+        }
+
+        // 页面加载时自动运行一些测试
+        window.onload = function() {
+            logResult('页面加载完成，开始环境检测...');
+            
+            try {
+                // 检查localStorage是否可用
+                if (typeof Storage !== 'undefined') {
+                    logResult('✅ localStorage API 可用');
+                    
+                    // 测试存储容量
+                    const testKey = 'storage_test_' + Date.now();
+                    const testData = 'x'.repeat(1024); // 1KB测试数据
+                    localStorage.setItem(testKey, testData);
+                    localStorage.removeItem(testKey);
+                    logResult('✅ 基本存储操作正常');
+                    
+                    // 检查当前存储的项目数
+                    logResult('当前localStorage中的项目数：' + localStorage.length);
+                    
+                    // 列出所有存储的键
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const key = localStorage.key(i);
+                        const size = new Blob([localStorage.getItem(key)]).size;
+                        logResult(`存储项 ${i+1}: ${key} (${size} bytes)`);
+                    }
+                    
+                } else {
+                    logResult('❌ localStorage API 不可用');
+                }
+            } catch (error) {
+                logResult('❌ 环境检测失败：' + error.message);
+            }
+        };
+    </script>
+</body>
+</html>
