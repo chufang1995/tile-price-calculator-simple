@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试全选/反选功能</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <header class="mb-8">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-xl shadow-lg p-6 text-white">
+                <h1 class="text-2xl font-bold">测试全选/反选功能</h1>
+            </div>
+        </header>
+
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">测试步骤</h2>
+            <ol class="list-decimal pl-6 space-y-2">
+                <li>在计算器页面进行几次不同的计算并保存记录（至少3条）</li>
+                <li>切换到历史记录页面</li>
+                <li>点击"全选"复选框</li>
+                <li>验证所有记录是否都被选中</li>
+                <li>再次点击"全选"复选框</li>
+                <li>验证所有记录是否都被取消选中</li>
+                <li>手动选择部分记录</li>
+                <li>点击"全选"复选框</li>
+                <li>验证是否所有记录都被选中</li>
+            </ol>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">预期结果</h2>
+            <ul class="list-disc pl-6 space-y-2">
+                <li>点击"全选"复选框时，所有记录应被选中</li>
+                <li>再次点击"全选"复选框时，所有记录应被取消选中</li>
+                <li>全选状态应正确反映当前记录的选中情况</li>
+                <li>移动端和桌面端的全选功能应保持同步</li>
+            </ul>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">技术说明</h2>
+            <p class="text-gray-700 mb-4">
+                修复了全选/反选功能的逻辑问题。现在的实现方式是：
+            </p>
+            <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                <li>检查当前是否所有记录都已选中</li>
+                <li>如果全部选中，则点击"全选"时取消所有选中</li>
+                <li>如果部分或全部未选中，则点击"全选"时选中所有记录</li>
+                <li>确保移动端和桌面端的全选状态保持同步</li>
+                <li>添加了控制台日志，便于调试</li>
+            </ul>
+        </div>
+
+        <div class="mt-8 text-center">
+            <a href="index.html" class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                <i class="fa fa-arrow-left mr-2"></i> 返回计算器
+            </a>
+        </div>
+    </div>
+</body>
+</html>
