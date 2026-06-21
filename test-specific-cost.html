@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>特定合计总成本测试页面</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        accent: '#F59E0B',
+                        dark: '#1F2937',
+                        light: '#F3F4F6'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .bg-gradient-primary {
+                background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .transition-all-300 {
+                transition: all 0.3s ease;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">特定合计总成本测试</h1>
+            <p class="text-gray-600">验证如何得到合计总成本 ¥3398.00</p>
+        </header>
+
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">测试场景分析</h2>
+            <p class="mb-4">根据要求，我们需要找到一组参数，使得合计总成本等于 ¥3398.00。</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <h3 class="text-lg font-medium text-gray-800">可能的参数组合</h3>
+                    
+                    <div class="bg-gray-50 p-4 rounded-md">
+                        <h4 class="font-medium text-gray-800 mb-2">场景1: 按平方计算成本</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-sm">
+                            <li>瓷砖尺寸: 800mm × 800mm × 10mm</li>
+                            <li>面积: 30㎡</li>
+                            <li>进货价（按平方）: ¥100.00/㎡</li>
+                            <li>进货总成本: ¥3000.00</li>
+                            <li>一口价运费: ¥398.00</li>
+                            <li>运费附加费: ¥0.00</li>
+                            <li>合计总成本: ¥3398.00</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-md">
+                        <h4 class="font-medium text-gray-800 mb-2">场景2: 按片计算成本</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-sm">
+                            <li>瓷砖尺寸: 800mm × 800mm × 10mm</li>
+                            <li>数量: 50片</li>
+                            <li>进货价（按片）: ¥60.00/片</li>
+                            <li>进货总成本: ¥3000.00</li>
+                            <li>一口价运费: ¥398.00</li>
+                            <li>运费附加费: ¥0.00</li>
+                            <li>合计总成本: ¥3398.00</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-md">
+                        <h4 class="font-medium text-gray-800 mb-2">场景3: 按重量计算运费</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-sm">
+                            <li>瓷砖尺寸: 800mm × 800mm × 10mm</li>
+                            <li>数量: 50片</li>
+                            <li>进货价（按片）: ¥60.00/片</li>
+                            <li>进货总成本: ¥3000.00</li>
+                            <li>单砖重量: 20kg</li>
+                            <li>总重量: 1吨</li>
+                            <li>按重量运费: ¥398.00/吨</li>
+                            <li>合计总成本: ¥3398.00</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <h3 class="text-lg font-medium text-gray-800">验证计算</h3>
+                    
+                    <div class="bg-gray-50 p-4 rounded-md">
+                        <h4 class="font-medium text-gray-800 mb-2">计算公式回顾</h4>
+                        <ul class="list-disc pl-5 space-y-2 text-sm">
+                            <li>进货总成本 = 总面积 × 进货价（按平方） 或 总数量 × 进货价（按片）</li>
+                            <li>运费 = 一口价运费 + 运费附加费 或 总重量 × 按重量运费</li>
+                            <li><strong>合计总成本 = 进货总成本 + 运费</strong></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-green-50 p-4 rounded-md border border-green-200">
+                        <h4 class="font-medium text-green-800 mb-2">结论</h4>
+                        <p class="text-green-700">根据以上分析，有多种参数组合可以得到合计总成本 ¥3398.00。最直接的方式是：</p>
+                        <ul class="list-disc pl-5 space-y-1 text-sm text-green-700 mt-2">
+                            <li>进货总成本: ¥3000.00</li>
+                            <li>运费: ¥398.00</li>
+                            <li>合计总成本: ¥3398.00</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-4 rounded-md border border-blue-200">
+                        <h4 class="font-medium text-blue-800 mb-2">使用建议</h4>
+                        <p class="text-blue-700 text-sm">您可以在主页面中输入上述任一参数组合，验证合计总成本是否正确显示为 ¥3398.00。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">快速验证表单</h2>
+            <p class="mb-4">填写以下表单，快速验证合计总成本计算：</p>
+            
+            <form id="verify-form" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">瓷砖长度 (mm)</label>
+                        <input type="number" id="length" value="800" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">瓷砖宽度 (mm)</label>
+                        <input type="number" id="width" value="800" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">数量 (片)</label>
+                        <input type="number" id="quantity" value="50" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">进货价（按片）(元/片)</label>
+                        <input type="number" id="cost-per-piece" value="60" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">一口价运费 (元)</label>
+                        <input type="number" id="fixed-shipping" value="398" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">运费附加费 (元)</label>
+                        <input type="number" id="shipping-additional" value="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                </div>
+                
+                <button type="button" id="calculate-btn" class="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-all-300">
+                    计算验证
+                </button>
+            </form>
+            
+            <div id="result" class="mt-6 hidden">
+                <div class="bg-gray-50 p-4 rounded-md">
+                    <h3 class="font-medium text-gray-800 mb-2">计算结果</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-sm text-gray-600">进货总成本:</p>
+                            <p id="total-cost" class="font-medium text-gray-800"></p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">运费:</p>
+                            <p id="shipping-cost" class="font-medium text-gray-800"></p>
+                        </div>
+                        <div class="col-span-2">
+                            <p class="text-sm text-gray-600">合计总成本:</p>
+                            <p id="total-cost-with-shipping" class="font-bold text-xl text-primary"></p>
+                        </div>
+                    </div>
+                    
+                    <div id="verification-message" class="mt-4 p-3 rounded-md text-center"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-8">
+            <a href="index.html" class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-600 transition-all-300">
+                <i class="fa fa-arrow-left mr-2"></i> 返回主页面
+            </a>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>瓷砖价格计算工具 - 特定合计总成本测试</p>
+            <p class="text-gray-400 text-sm mt-2">© 2025 瓷砖价格计算工具. 保留所有权利.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('calculate-btn').addEventListener('click', function() {
+            const length = parseFloat(document.getElementById('length').value) || 0;
+            const width = parseFloat(document.getElementById('width').value) || 0;
+            const quantity = parseFloat(document.getElementById('quantity').value) || 0;
+            const costPerPiece = parseFloat(document.getElementById('cost-per-piece').value) || 0;
+            const fixedShipping = parseFloat(document.getElementById('fixed-shipping').value) || 0;
+            const shippingAdditional = parseFloat(document.getElementById('shipping-additional').value) || 0;
+            
+            // 计算进货总成本
+            const totalCost = quantity * costPerPiece;
+            
+            // 计算运费
+            let shippingCost = 0;
+            if (fixedShipping > 0) {
+                shippingCost = fixedShipping + shippingAdditional;
+            }
+            
+            // 计算合计总成本
+            const totalCostWithShipping = totalCost + shippingCost;
+            
+            // 显示结果
+            document.getElementById('total-cost').textContent = `¥${totalCost.toFixed(2)}`;
+            document.getElementById('shipping-cost').textContent = `¥${shippingCost.toFixed(2)}`;
+            document.getElementById('total-cost-with-shipping').textContent = `¥${totalCostWithShipping.toFixed(2)}`;
+            
+            // 验证结果
+            const verificationMessage = document.getElementById('verification-message');
+            if (totalCostWithShipping === 3398.00) {
+                verificationMessage.textContent = '✓ 验证成功！合计总成本等于 ¥3398.00';
+                verificationMessage.className = 'mt-4 p-3 rounded-md text-center bg-green-100 text-green-800';
+            } else {
+                verificationMessage.textContent = `✗ 验证失败。合计总成本为 ¥${totalCostWithShipping.toFixed(2)}，不等于 ¥3398.00`;
+                verificationMessage.className = 'mt-4 p-3 rounded-md text-center bg-red-100 text-red-800';
+            }
+            
+            document.getElementById('result').classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
