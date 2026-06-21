@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试税点功能</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <header class="mb-8">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-xl shadow-lg p-6 text-white">
+                <h1 class="text-2xl font-bold">测试税点功能</h1>
+            </div>
+        </header>
+
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">测试步骤</h2>
+            <ol class="list-decimal pl-6 space-y-2">
+                <li>验证单价显示顺序是否正确：
+                    <ul class="list-disc pl-6 mt-2">
+                        <li>单价（按片，含运费）</li>
+                        <li>单价（按平方，含运费）</li>
+                        <li>单价（按片，不含运费）</li>
+                        <li>单价（按平方，不含运费）</li>
+                    </ul>
+                </li>
+                <li>测试税点功能：
+                    <ul class="list-disc pl-6 mt-2">
+                        <li>输入瓷砖尺寸和数量</li>
+                        <li>输入进货成本</li>
+                        <li>设置税点为13%</li>
+                        <li>点击"计算价格"按钮</li>
+                        <li>验证税额是否正确计算（税额 = (进货成本 + 运费 + 利润) × 税点）</li>
+                        <li>验证总价是否包含税额</li>
+                    </ul>
+                </li>
+                <li>测试损耗率默认值：
+                    <ul class="list-disc pl-6 mt-2">
+                        <li>重置计算器</li>
+                        <li>验证损耗率默认值是否为0%</li>
+                    </ul>
+                </li>
+                <li>测试保存和加载记录功能：
+                    <ul class="list-disc pl-6 mt-2">
+                        <li>设置税点并完成计算</li>
+                        <li>保存记录</li>
+                        <li>在历史记录中查看该记录</li>
+                        <li>验证税额是否正确显示</li>
+                        <li>点击"加载到计算器"按钮</li>
+                        <li>验证税点是否正确加载</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">预期结果</h2>
+            <ul class="list-disc pl-6 space-y-2">
+                <li>单价显示顺序应符合要求</li>
+                <li>税点默认值应为0%</li>
+                <li>损耗率默认值应为0%</li>
+                <li>税额计算应正确：税额 = (进货成本 + 运费 + 利润) × 税点</li>
+                <li>总价应包含税额：总价 = 进货成本 + 运费 + 利润 + 税额</li>
+                <li>税额应在计算结果中显示（仅当税点大于0时）</li>
+                <li>税点应正确保存和加载</li>
+            </ul>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">计算公式</h2>
+            <div class="space-y-3">
+                <div class="p-3 bg-blue-50 rounded-lg">
+                    <p class="font-medium">总运费 = 按重量运费 + 一口价运费 + 运费附加费</p>
+                </div>
+                <div class="p-3 bg-green-50 rounded-lg">
+                    <p class="font-medium">利润 = 进货成本 × 利润率</p>
+                </div>
+                <div class="p-3 bg-yellow-50 rounded-lg">
+                    <p class="font-medium">税额 = (进货成本 + 运费 + 利润) × 税点</p>
+                </div>
+                <div class="p-3 bg-purple-50 rounded-lg">
+                    <p class="font-medium">总价 = 进货成本 + 运费 + 利润 + 税额</p>
+                </div>
+                <div class="p-3 bg-red-50 rounded-lg">
+                    <p class="font-medium">单价（含运费） = 总价 ÷ 数量/面积</p>
+                </div>
+                <div class="p-3 bg-indigo-50 rounded-lg">
+                    <p class="font-medium">单价（不含运费） = (进货成本 + 利润) ÷ 数量/面积</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 text-center">
+            <a href="index.html" class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                <i class="fa fa-arrow-left mr-2"></i> 返回计算器
+            </a>
+        </div>
+    </div>
+</body>
+</html>
